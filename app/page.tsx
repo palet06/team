@@ -1,11 +1,8 @@
+const Home = () => (
+  <>
+    <h1 className="">Hayır</h1>
+    <h1 className="font-space-grotesk">Hayır</h1>
+  </>
+);
 
-
-const Home = () => 
-  (
-    <h1>Hayır</h1>
-  );
-
-
-
-
-export default Home
+export default Home;
