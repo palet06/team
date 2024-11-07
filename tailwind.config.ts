@@ -46,8 +46,8 @@ const config: Config = {
         "dark-200": "2px 0px 20px 0px rgba(39, 36, 36, 0.04)",
       },
       backgroundImage: {
-        "auth-dark": 'url("/images/auth-dark.png")',
-        "auth-light": 'url("/images/auth-light.png")',
+        "auth-dark": "url('/auth-dark.png')",
+        "auth-light": "url('/auth-light.png')",
       },
       screens: {
         xs: "420px",
