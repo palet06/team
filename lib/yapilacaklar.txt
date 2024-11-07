@@ -1,0 +1,77 @@
+const query = {
+    pageSize: 100,
+    pageNumber: 1,
+    allHistories: false,
+    izinAktifMi: null,
+    referansNo: "",
+    yabanciKimlikNo: "99327984056",
+    ad: "",
+    soyad: "",
+    anaAdi: "",
+    babaAdi: "",
+    pasaportNo: "",
+    dogumTarihi: "",
+    isyeriSgkTescilNumarasi: "",
+    isyeriUnvani: "",
+    inBasvuruNoList: [],
+    notInBasvuruNoList: [],
+    inUyrukIdList: [],
+    notInUyrukIdList: [],
+    inBasvuruTipiList: [],
+    notInBasvuruTipiList: [],
+    inBasvuruTuruList: [],
+    notInBasvuruTuruList: [],
+    inCalismaIzniTuruList: [],
+    notInCalismaIzniTuruList: [],
+    inCinsiyetList: [],
+    notInCinsiyetList: [],
+    inEgitimDurumuList: [],
+    notInEgitimDurumuList: [],
+    inFirmaTipiList: [],
+    notInFirmaTipiList: [],
+    inGeciciKorumaStatusuList: [],
+    notInGeciciKorumaStatusuList: [],
+    inIslemTipiList: [],
+    notInIslemTipiList: [],
+    izinDurumuList: [],
+    notInIzinDurumuList: [],
+    inMedeniHalList: [],
+    notInMedeniHalList: [],
+    inPasaportTuruList: [],
+    notInPasaportTuruList: [],
+    inSermayeYapisiList: [],
+    notInSermayeYapisiList: [],
+    inTurkceSeviyesiList: [],
+    notInTurkceSeviyesiList: [],
+  };
+
+  const verileriAl = async () => {
+    const gelenVeri = await fetch(
+      "https://services.csgb.gov.tr/workpernet/get-filtered-work-permit-data",
+      {
+        method: "POST",
+
+        headers: {
+          ApiKey: "d8994824-a876-458c-bae6-44g58c357aa9",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(query),
+      }
+    ).then((response) => response.json());
+    //.then((data) => console.log(data));
+    //const jsonData = await gelenVeri.json();
+    // console.log(jsonData);
+    return gelenVeri;
+  };
+
+  const veriListele = await verileriAl();
+  //console.log(session);
+  return (
+    <>
+      {veriListele.data.content.map((a: any) => (
+        <li>{a.basvuruNo}</li>
+      ))}
+      <h1 className="">Hayır</h1>
+      <h1 className="font-space-grotesk">Hayır</h1>
+    </>
+  );
