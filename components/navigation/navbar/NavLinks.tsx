@@ -2,6 +2,7 @@
 import { SheetClose } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
+import { House } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,13 +33,9 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
               "flex items-center justify-start gap-4 bg-transparent p-4"
             )}
           >
-            <Image
-              src={item.imgURL}
-              alt={item.label}
-              width={20}
-              height={20}
-              className={cn({ "invert-colors": !isActive })}
-            />
+            <item.imgURL className={cn({ "invert-colors": !isActive })} />
+            {/* <House className={cn({ "invert-colors": !isActive })} /> */}
+
             <p
               className={cn(
                 isActive ? "base-bold" : "base-medium",
