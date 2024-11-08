@@ -33,8 +33,8 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
               "flex items-center justify-start gap-4 bg-transparent p-4"
             )}
           >
-            <item.imgURL className={cn({ "invert-colors": !isActive })} />
-            {/* <House className={cn({ "invert-colors": !isActive })} /> */}
+            <item.imgURL className={cn({ "invert-colors": isActive })} />
+            {/* <House className={cn({ "invert-colors": isActive })} /> */}
 
             <p
               className={cn(
