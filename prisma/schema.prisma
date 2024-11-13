@@ -1,0 +1,184 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  projectId          String    @id @default(uuid())
+  projectName        String
+  projectDescription String?
+  projectPictureUrl  String?
+  isActive           Boolean   @default(true)
+  createdDate        DateTime  @default(now()) @db.Timestamptz
+  updatedDate        DateTime? @db.Timestamptz
+
+  projectTousers ProjectToUser[]
+  tasks          Task[]
+  assignedTasks  AssignedTask[]
+}
+
+model ProjectToUser {
+  projectToUserId Int       @id @default(autoincrement())
+  projectId       String
+  project         Project   @relation(fields: [projectId], references: [projectId])
+  userId          String
+  user            User      @relation(fields: [userId], references: [userId])
+  createdDate     DateTime  @default(now()) @db.Timestamptz
+  updatedDate     DateTime? @db.Timestamptz
+}
+
+model User {
+  userId            String    @id @default(uuid())
+  username          String?   @unique
+  email             String    @unique
+  password          String
+  name              String
+  surname           String
+  isActive          Boolean   @default(true)
+  isExecutive       Boolean   @default(false)
+  isTeamMember      Boolean   @default(false)
+  profilePictureUrl String?
+  createdDate       DateTime  @default(now()) @db.Timestamptz
+  updatedDate       DateTime? @db.Timestamptz
+
+  projectTousers ProjectToUser[]
+  assignedTasks  AssignedTask[]
+  comments       Comment[]
+  attachments    Attachment[]
+  userToRole     UserToRole[]
+  autditLogs     AuditLog[]
+}
+
+model Task {
+  taskId        String    @id @default(uuid())
+  title         String
+  description   String?
+  status        String    @default("İnceleniyor")
+  priority      String    @default("Orta")
+  tags          String?
+  isCompleted   Boolean   @default(false)
+  completedDate DateTime? @db.Timestamptz
+  isActive      Boolean   @default(true)
+
+  createdDate DateTime  @default(now()) @db.Timestamptz
+  updatedDate DateTime? @db.Timestamptz
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [projectId])
+
+  assignedTasks AssignedTask[]
+
+  comments    Comment[]
+  attachments Attachment[]
+}
+
+model Comment {
+  commentId String @id @default(uuid())
+  text      String
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [taskId])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [userId])
+
+  createdDate DateTime  @default(now()) @db.Timestamptz
+  updatedDate DateTime? @db.Timestamptz
+}
+
+model Attachment {
+  attachmentId String  @id @default(uuid())
+  fileUrl      String
+  fileName     String
+  description  String?
+  taskId       String
+  task         Task    @relation(fields: [taskId], references: [taskId])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [userId])
+
+  createdDate DateTime  @default(now()) @db.Timestamptz
+  updatedDate DateTime? @db.Timestamptz
+}
+
+model AssignedTask {
+  assignedTaskId String    @id @default(uuid())
+  startDate      DateTime  @default(now()) @db.Timestamptz
+  dueDate        DateTime  @default(now()) @db.Timestamptz
+  completedDate  DateTime? @db.Timestamptz
+  createdDate    DateTime  @default(now()) @db.Timestamptz
+  updatedDate    DateTime? @db.Timestamptz
+
+  userId String
+  user   User   @relation(fields: [userId], references: [userId])
+
+  taskId String
+  task   Task   @relation(fields: [taskId], references: [taskId])
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [projectId])
+}
+
+model Role {
+  roleId           String             @id @default(uuid())
+  roleName         String
+  roleDescription  String
+  createdDate      DateTime           @default(now()) @db.Timestamptz
+  updatedDate      DateTime?          @db.Timestamptz
+  userToRole       UserToRole[]
+  roleToPermission RoleToPermission[]
+}
+
+model UserToRole {
+  userToRoleId Int @id @default(autoincrement())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [userId])
+
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [roleId])
+
+  createdDate DateTime  @default(now()) @db.Timestamptz
+  updatedDate DateTime? @db.Timestamptz
+}
+
+model Permission {
+  permissionId          String             @id @default(uuid())
+  permissionName        String
+  permissionDescription String
+  createdDate           DateTime           @default(now()) @db.Timestamptz
+  updatedDate           DateTime?          @db.Timestamptz
+  roleToPermission      RoleToPermission[]
+}
+
+model RoleToPermission {
+  roleToPermissionId Int @id @default(autoincrement())
+
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [roleId])
+
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [permissionId])
+
+  createdDate DateTime  @default(now()) @db.Timestamptz
+  updatedDate DateTime? @db.Timestamptz
+}
+
+model AuditLog {
+  logId                String   @id @default(uuid())
+  userId               String
+  user                 User     @relation(fields: [userId], references: [userId])
+  activityType         String
+  activitiyDescription String
+  activityTime         DateTime @default(now()) @db.Timestamptz
+}
