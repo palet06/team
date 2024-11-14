@@ -55,7 +55,7 @@ const RightSidebar = () => {
               href={`/assigned-tasks/${id}`}
             >
               <p className="body-medium text-dark500_light700">{title}</p>
-              <ChevronRight className="!invert-colors" />
+              <ChevronRight className="text-black dark:text-white" />
             </Link>
           ))}
         </div>
