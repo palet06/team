@@ -20,8 +20,8 @@ interface Props {
 const PriorCard = ({ _id, name, tasks, showCount, compact }: Props) => {
   return (
     <Link href={ROUTES.TASKS(_id)} className="flex justify-between gap-2">
-      <Badge className="subtle-medium background-light800_dark300 text-light400_light500 rounded-md border-none px-4 py-2 uppercase">
-        <div className="flex-center space-x-2">
+      <Badge className="subtle-medium background-light800_dark300 text-light400_light500 rounded-md border-none px-4 py-2 ">
+        <div className="flex-center space-x-2 w-16">
           {name == "Acil" && (
             <ShieldAlert className="text-red-600 dark:text-red-500 " />
           )}
@@ -30,7 +30,7 @@ const PriorCard = ({ _id, name, tasks, showCount, compact }: Props) => {
             <BetweenHorizonalStart className="text-yellow-400" />
           )}
           {name == "Düşük" && <ChevronsDown className="text-green-500" />}
-          <i>ICON</i>
+
           <span>{name}</span>
         </div>
       </Badge>
