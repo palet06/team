@@ -21,7 +21,7 @@ const PriorCard = ({ _id, name, tasks, showCount, compact }: Props) => {
   return (
     <Link href={ROUTES.TASKS(_id)} className="flex justify-between gap-2">
       <Badge className="subtle-medium background-light800_dark300 text-light400_light500 rounded-md border-none px-4 py-2 ">
-        <div className="flex-center space-x-2 w-16">
+        <div className="flex items-center space-x-2 w-16">
           {name == "Acil" && (
             <ShieldAlert className="text-red-600 dark:text-red-500 " />
           )}
@@ -35,7 +35,9 @@ const PriorCard = ({ _id, name, tasks, showCount, compact }: Props) => {
         </div>
       </Badge>
       {showCount && (
-        <p className="small-medium text-dark500_light700">{tasks}</p>
+        <p className="flex items-center small-medium text-dark500_light700">
+          {tasks}
+        </p>
       )}
     </Link>
   );

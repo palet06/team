@@ -1,5 +1,7 @@
 import { auth } from "@/auth";
 import { Chart } from "@/components/cards/Chart";
+import TeamMemberCard from "@/components/cards/TeamMemberCard";
+import { TeamMemberPerformanceCard } from "@/components/cards/TeamMemberPerformanceCard";
 import { Separator } from "@/components/ui/separator";
 //TODO: Brada veri tabanından danışmanlar, atanan görevler ve görevler tablosundan veriler çekilecek
 //TODO: Ayrıca hot tasks ve öncelikli görevlerin adetleri vs.  yap gardaş veri tabanaından mı çekiyorsun artık ne yapıyorsun
@@ -40,10 +42,15 @@ const Home = async () => {
   const allAssignedTasks = await getAllAssignedTasks();
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <Chart allTasks={allTasks} allAssignedTasks={allAssignedTasks} />
-        <Separator />
+      <div className="grid xs:grid-cols-1 lg:grid-cols-2 gap-4">
+        <div>
+          <Chart allTasks={allTasks} allAssignedTasks={allAssignedTasks} />
+        </div>
+        <div>
+          <TeamMemberPerformanceCard />
+        </div>
       </div>
+      <Separator />
     </>
   );
 };
