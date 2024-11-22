@@ -1,7 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import { Bar, BarChart, LabelList, XAxis } from "recharts";
 
 import {
   Card,
@@ -17,51 +16,96 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
+import { allAsigneeType } from "@/app/(root)/page";
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-} satisfies ChartConfig;
+type chartDataType =
+  | [
+      {
+        danisman: string;
+        atanan: number;
+        tamamlanmayan: number;
+        tamamlanan: number;
+      }
+    ]
+  | null
+  | any
+  | undefined;
 
-export function TeamMemberPerformanceCard() {
+export function TeamMemberPerformanceCard({
+  allAssignee,
+}: {
+  allAssignee: allAsigneeType;
+}) {
+  const chartConfig = {
+    atanan: {
+      label: "Atanan",
+      color: "hsl(var(--chart-4))",
+    },
+    tamamlanmayan: {
+      label: "Tamamlanmayan",
+      color: "hsl(var(--chart-2))",
+    },
+    tamamlanan: {
+      label: "Tamamlanan",
+      color: "hsl(var(--chart-1))",
+    },
+  } satisfies ChartConfig;
+  const chartData: chartDataType[] = [];
+  allAssignee.map((a) => {
+    chartData.push({
+      danisman: a.name,
+
+      atanan: a.assignedTasks.length,
+
+      tamamlanmayan: a.assignedTasks.filter((f) => f.task.isCompleted == false)
+        .length,
+      tamamlanan: a.assignedTasks.filter((f) => f.task.isCompleted == true)
+        .length,
+    });
+  });
+
   return (
-    <Card>
+    <Card className="max-w-xl">
       <CardHeader>
-        <CardTitle>Bar Chart - Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Yazılım Danışmanları</CardTitle>
+        <CardDescription>14.11.2024 tarihi itibariyle</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              top: 20,
-            }}
-          >
-            <CartesianGrid vertical={false} />
+          <BarChart accessibilityLayer data={chartData} margin={{ top: 20 }}>
             <XAxis
-              dataKey="month"
+              dataKey="danisman"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.split(" ")[0].toUpperCase()}
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+
+            <Bar dataKey="atanan" fill="var(--color-atanan)" radius={4}>
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
+            <Bar dataKey="tamamlanan" fill="var(--color-tamamlanan)" radius={4}>
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
+            <Bar
+              dataKey="tamamlanmayan"
+              fill="var(--color-tamamlanmayan)"
+              radius={4}
+            >
               <LabelList
                 position="top"
                 offset={12}
@@ -72,14 +116,14 @@ export function TeamMemberPerformanceCard() {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
+      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
           Showing total visitors for the last 6 months
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

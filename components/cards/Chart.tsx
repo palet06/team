@@ -63,7 +63,7 @@ export function Chart({
   const chartData: chartDataType = [
     {
       kategori: "toplamGorev",
-      gorevSayisi: allTasks?.filter((a) => a.isActive == true).length,
+      gorevSayisi: allTasks.length,
       fill: "hsl(var(--chart-4))",
     },
     {
@@ -85,9 +85,8 @@ export function Chart({
     },
     {
       kategori: "atanmamisGorev",
-      gorevSayisi:
-        allTasks?.filter((a) => a.isActive == true).length -
-        allAssignedTasks?.length,
+      // gorevSayisi: allTasks.length - allAssignedTasks?.length,
+      gorevSayisi: allTasks.filter((a) => a.assignedTasks.length === 0).length,
       fill: "hsl(var(--chart-5))",
     },
   ];
@@ -96,44 +95,44 @@ export function Chart({
     (allAssignedTasks.filter((a) => a.task.isCompleted == true).length * 100) /
     allTasks?.filter((a) => a.isActive == true).length;
   return (
-    <div className="flex w-full justify-center">
-      <Card className="max-w-xl">
-        <CardHeader>
-          <CardTitle>Sistemdeki Görevler</CardTitle>
-          <CardDescription>14.11.2024 tarihi itibariyle</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig}>
-            <BarChart
-              accessibilityLayer
-              data={chartData}
-              layout="vertical"
-              margin={{
-                left: 50,
-              }}
-            >
-              <YAxis
-                dataKey="kategori"
-                type="category"
-                tickLine={true}
-                tickMargin={10}
-                axisLine={false}
-                tickFormatter={(value) =>
-                  chartConfig[value as keyof typeof chartConfig]?.label
-                }
-              />
-              <XAxis
-                dataKey="gorevSayisi"
-                type="number"
-                allowDecimals={false}
-                tickCount={allTasks?.length}
-              />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-              <Bar dataKey="gorevSayisi" layout="vertical" radius={5} />
-            </BarChart>
-          </ChartContainer>
-        </CardContent>
-        <CardFooter className="flex-col items-start gap-2 text-sm">
+    <Card className="max-w-xl">
+      <CardHeader>
+        <CardTitle>Sistemdeki Görevler</CardTitle>
+        <CardDescription>14.11.2024 tarihi itibariyle</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <BarChart
+            accessibilityLayer
+            data={chartData}
+            layout="vertical"
+            margin={{
+              left: 50,
+            }}
+          >
+            <YAxis
+              dataKey="kategori"
+              type="category"
+              tickLine={true}
+              tickMargin={10}
+              axisLine={false}
+              style={{ color: "white" }}
+              tickFormatter={(value) =>
+                chartConfig[value as keyof typeof chartConfig]?.label
+              }
+            />
+            <XAxis
+              dataKey="gorevSayisi"
+              type="number"
+              allowDecimals={false}
+              tickCount={allTasks?.length}
+            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <Bar dataKey="gorevSayisi" layout="vertical" radius={5} />
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
           <div className="flex gap-2 font-medium text-base leading-none items-center justify-center w-full">
             {hesaplama <= 50 && (
               <>
@@ -163,8 +162,7 @@ export function Chart({
               </>
             )}
           </div>
-        </CardFooter>
-      </Card>
-    </div>
+        </CardFooter> */}
+    </Card>
   );
 }

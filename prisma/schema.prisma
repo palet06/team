@@ -127,6 +127,8 @@ model AssignedTask {
 
   projectId String
   project   Project @relation(fields: [projectId], references: [projectId])
+
+  @@unique([taskId])
 }
 
 model Role {

@@ -1,9 +1,32 @@
+import {
+  allAsigneeType,
+  allAssignedTasksType,
+  allTasksType,
+} from "@/app/(root)/page";
 import { ContactRound, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const TeamMemberCard = () => {
+const TeamMemberCard = ({
+  _Id,
+  asigneeName,
+  asigneeUsername,
+  asigneeEmail,
+  asigneePic,
+  createdDate,
+  tasks,
+  assignedTasks,
+}: {
+  _Id: string;
+  asigneeName: string;
+  asigneeUsername: string;
+  asigneeEmail: string;
+  asigneePic: string;
+  createdDate: Date;
+  tasks: allTasksType;
+  assignedTasks: allAssignedTasksType;
+}) => {
   return (
     <div className="grid grid-cols-1 lg:gap-[7.5]">
       <div className="flex flex-col shadow-lg bg-white rounded-xl border-[1px]">
@@ -13,7 +36,7 @@ const TeamMemberCard = () => {
               <Image
                 width={150}
                 height={150}
-                src={""}
+                src={asigneePic}
                 className="rounded-full"
                 alt="profile picture"
               />
@@ -24,7 +47,7 @@ const TeamMemberCard = () => {
               href="#"
               className="font-bold text-base leading-5  text-gray-900"
             >
-              Onur TOSUN
+              {asigneeName}
             </a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -43,12 +66,13 @@ const TeamMemberCard = () => {
           <div className="flex  flex-wrap justify-center items-center gap-4 mb-7">
             <div className="flex items-center text-sm gap-1 text-gray-500">
               <ContactRound className="size-4" />
-              @onr 25-10-2024
+              {"@"}
+              {asigneeUsername} {createdDate.toLocaleDateString()}
             </div>
             <div className="flex items-center text-sm gap-1 text-gray-500">
               <Mail className="size-4" />
               <a href="#" className="hover:text-primary-active">
-                asfd@asdf.com
+                {asigneeEmail}
               </a>
             </div>
           </div>
@@ -63,19 +87,30 @@ const TeamMemberCard = () => {
           <div className="flex flex-wrap gap-2 lg:gap-5 items-center justify-center">
             <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center ">
               <span className="text-gray-900 text-base leading-none font-medium">
-                15
+                {assignedTasks.filter((a) => a.userId == _Id).length}
               </span>
               <span className=" text-xs text-gray-500 ">Atanan </span>
             </div>
             <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">
               <span className="text-gray-900 text-base leading-none font-medium">
-                20
+                {
+                  assignedTasks.filter(
+                    (a) => a.userId == _Id && a.task.isCompleted == true
+                  ).length
+                }
               </span>
               <span className=" text-xs text-gray-500 ">Tamamlanan</span>
             </div>
             <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">
               <span className="text-gray-900 text-base leading-none font-medium">
-                %75
+                %{" "}
+                {(
+                  (assignedTasks.filter(
+                    (a) => a.userId == _Id && a.task.isCompleted == true
+                  ).length *
+                    100) /
+                  assignedTasks.filter((a) => a.userId == _Id).length
+                ).toFixed(1)}
               </span>
               <span className="text-xs text-gray-500">Performans</span>
             </div>
