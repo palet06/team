@@ -42,10 +42,10 @@ const TeamMemberCard = ({
               />
             </div>
           </div>
-          <div className="flex items-center justify-center gap-1.5 mb-2.5">
+          <div className="flex items-center justify-center  gap-1.5 mb-2.5 ">
             <a
               href="#"
-              className="font-bold text-sm leading-5  text-gray-900 dark:text-white"
+              className="text-center font-bold text-sm leading-5  text-gray-900 dark:text-white "
             >
               {asigneeName}
             </a>
@@ -91,33 +91,43 @@ const TeamMemberCard = ({
 
           <div className="flex flex-wrap gap-2 lg:gap-5 items-center justify-center">
             <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center ">
-              <span className="text-gray-900 dark:text-gray-500 text-base leading-none font-medium">
+              <span className="text-gray-900 dark:text-white  text-base leading-none font-medium">
                 {assignedTasks.filter((a) => a.userId == _Id).length}
               </span>
-              <span className=" text-xs text-gray-500 ">Atanan </span>
+              <span className=" text-xs text-gray-500 dark:text-white ">
+                Atanan{" "}
+              </span>
             </div>
             <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">
-              <span className="text-gray-900 dark:text-gray-500 text-base leading-none font-medium">
+              <span className="text-gray-900 dark:text-white text-base leading-none font-medium">
                 {
                   assignedTasks.filter(
                     (a) => a.userId == _Id && a.task.isCompleted == true
                   ).length
                 }
               </span>
-              <span className=" text-xs text-gray-500 ">Tamamlanan</span>
+              <span className=" text-xs text-gray-500 dark:text-white  ">
+                Tamamlanan
+              </span>
             </div>
             <div className="grid grid-cols-1 gap-1.5 border-[0.5px] border-dashed border-gray-400 rounded-md px-2.5 py-2 shrink-0 min-w-24 text-center">
-              <span className="text-gray-900 dark:text-gray-500 text-base leading-none font-medium">
-                %{" "}
-                {(
-                  (assignedTasks.filter(
-                    (a) => a.userId == _Id && a.task.isCompleted == true
-                  ).length *
-                    100) /
-                  assignedTasks.filter((a) => a.userId == _Id).length
-                ).toFixed(1)}
+              <span className="text-gray-900 dark:text-white  text-base leading-none font-medium">
+                {}
+                {assignedTasks.filter((a) => a.userId == _Id).length == 0 ? (
+                  <p>-</p>
+                ) : (
+                  (
+                    (assignedTasks.filter(
+                      (a) => a.userId == _Id && a.task.isCompleted == true
+                    ).length *
+                      100) /
+                    assignedTasks.filter((a) => a.userId == _Id).length
+                  ).toFixed(1)
+                )}
               </span>
-              <span className="text-xs text-gray-500">Performans</span>
+              <span className="text-xs text-gray-500 dark:text-white ">
+                Performans
+              </span>
             </div>
           </div>
         </div>
